@@ -1,2 +1,2 @@
-rootProject.name = "stmaryredactor"
+rootProject.name = "stmarygate-redaction"
 

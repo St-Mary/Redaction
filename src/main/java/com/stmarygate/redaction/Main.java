@@ -1,6 +1,6 @@
-package me.aikoo.stmaryredactor;
+package com.stmarygate.redaction;
 
-import me.aikoo.stmaryredactor.bot.StMaryRedactor;
+import com.stmarygate.redaction.bot.StMaryRedactor;
 
 public class Main {
     public static void main(String[] args) {

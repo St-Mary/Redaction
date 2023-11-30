@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = "me.aikoo.stmaryredactor"
+group = "com.stmarygate.redaction"
 version = "1.0-SNAPSHOT"
 
 repositories {

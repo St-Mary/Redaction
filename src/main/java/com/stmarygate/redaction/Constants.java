@@ -1,4 +1,4 @@
-package me.aikoo.stmaryredactor;
+package com.stmarygate.redaction;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
