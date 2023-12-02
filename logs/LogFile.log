@@ -443,3 +443,39 @@ net.dv8tion.jda.api.exceptions.ContextException: null
 	at com.neovisionaries.ws.client.ReadingThread.main(ReadingThread.java:108)
 	at com.neovisionaries.ws.client.ReadingThread.runMain(ReadingThread.java:64)
 	at com.neovisionaries.ws.client.WebSocketThread.run(WebSocketThread.java:45)
+18:24:25.587 [1;36mHikariPool-1 housekeeper          [0;39m [31m          [0;39m [1;32mHikariPool     [0;39m
+                [31mWARN  [0;39m HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=30m27s706ms).
+18:24:55.473 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mWebSocketClient[0;39m
+                [31mWARN  [0;39m Got disconnected from WebSocket (Code 1000). Appending to reconnect queue
+18:43:13.314 [1;36mHikariPool-1 housekeeper          [0;39m [31m          [0;39m [1;32mHikariPool     [0;39m
+                [31mWARN  [0;39m HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m47s687ms).
+18:43:42.180 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mWebSocketClient[0;39m
+                [31mWARN  [0;39m Got disconnected from WebSocket (Code 1000). Appending to reconnect queue
+19:12:32.100 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+19:42:27.296 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mSqlExceptionHel[0;39m
+                [31mWARN  [0;39m SQL Error: 0, SQLState: 22001
+19:42:27.296 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mSqlExceptionHel[0;39m
+                [1;31mERROR [0;39m ERROR: value too long for type character varying(255)
+19:42:27.304 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+20:14:59.380 [1;36mHikariPool-1 housekeeper          [0;39m [31m          [0;39m [1;32mHikariPool     [0;39m
+                [31mWARN  [0;39m HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=26m32s98ms).
+20:15:18.048 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mWebSocketClient[0;39m
+                [31mWARN  [0;39m Got disconnected from WebSocket (Code 1000). Appending to reconnect queue
+21:18:29.466 [1;36mHikariPool-1 housekeeper          [0;39m [31m          [0;39m [1;32mHikariPool     [0;39m
+                [31mWARN  [0;39m HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1h3m78ms).
+21:18:32.684 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mWebSocketClient[0;39m
+                [31mWARN  [0;39m Got disconnected from WebSocket (Code 1000). Appending to reconnect queue
+21:49:37.970 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+22:06:28.879 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+22:14:33.971 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+22:16:14.722 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+22:22:55.007 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+22:24:12.806 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
