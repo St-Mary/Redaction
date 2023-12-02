@@ -14,6 +14,10 @@ public class VillageEntity {
   private Long id;
 
   @Setter
+  @Column(name = "village_emote", nullable = false)
+  private String emote;
+
+  @Setter
   @Column(name = "village_name", nullable = false)
   private String name;
 
@@ -31,4 +35,12 @@ public class VillageEntity {
   @JoinColumn(name = "village_region", nullable = true)
   @ManyToOne
   private RegionEntity region;
+
+  public String getName() {
+    return this.emote + " " + this.name;
+  }
+
+  public String getNameWithoutEmote() {
+    return this.name;
+  }
 }

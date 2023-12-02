@@ -19,6 +19,8 @@ public class AddPlace extends CommandAbstract {
     this.description = "Add a place.";
 
     this.options.add(
+        new OptionData(OptionType.STRING, "emote", "The name of the place to add.", true));
+    this.options.add(
         new OptionData(OptionType.STRING, "name", "The name of the place to add.", true));
     this.options.add(
         new OptionData(
@@ -35,6 +37,7 @@ public class AddPlace extends CommandAbstract {
   public void execute(SlashCommandInteractionEvent event) {
     event.deferReply().queue();
 
+    String emote = Objects.requireNonNull(event.getOption("emote")).getAsString();
     String namePlace = Objects.requireNonNull(event.getOption("name")).getAsString();
     String descriptionPlace = Objects.requireNonNull(event.getOption("description")).getAsString();
     String regionName = Objects.requireNonNull(event.getOption("region")).getAsString();
@@ -46,7 +49,7 @@ public class AddPlace extends CommandAbstract {
 
     PlaceEntity place = new PlaceEntity();
     if (!setPlaceDetails(
-        place, namePlace, descriptionPlace, regionName, isInVillage, villageName, event)) {
+        place, namePlace, descriptionPlace, emote, regionName, isInVillage, villageName, event)) {
       return;
     }
 
@@ -57,6 +60,7 @@ public class AddPlace extends CommandAbstract {
       PlaceEntity place,
       String namePlace,
       String descriptionPlace,
+      String emote,
       String regionName,
       boolean isInVillage,
       String villageName,
@@ -70,6 +74,7 @@ public class AddPlace extends CommandAbstract {
     }
 
     place.setName(namePlace);
+    place.setEmote(emote);
     place.setDescription(descriptionPlace);
     place.setRegion(region);
 
@@ -99,7 +104,6 @@ public class AddPlace extends CommandAbstract {
     embed.setAuthor("Place already exists!", null, event.getUser().getAvatarUrl());
     embed.setDescription("A place with the same name already exists.");
     embed.addField("Name", place.getName(), true);
-    embed.addField("Description", place.getDescription(), true);
     embed.addField("Region", place.getRegion().getName(), true);
     embed.setColor(0xff0000);
     embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());
@@ -143,7 +147,6 @@ public class AddPlace extends CommandAbstract {
     embed.setAuthor("Place added!", null, event.getUser().getAvatarUrl());
     embed.setDescription("The place has been added.");
     embed.addField("Name", place.getName(), true);
-    embed.addField("Description", place.getDescription(), true);
     embed.addField("Region", place.getRegion().getName(), true);
     embed.setColor(0x00ff00);
     embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());

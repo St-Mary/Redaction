@@ -43,7 +43,7 @@ public class GetRegion extends CommandAbstract {
           "╭───────────┈ ➤ ✎ **"
               + "\uD83C\uDF0D Region Information"
               + "**\n- "
-              + "☀️ **Name:** `"
+              + "**Name:** `"
               + region.getName()
               + "`\n- "
               + "\uD83C\uDF67 **Description:** "

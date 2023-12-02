@@ -18,6 +18,8 @@ public class AddVillage extends CommandAbstract {
     this.options.add(
         new OptionData(OptionType.STRING, "region", "The region to add the city to.", true));
     this.options.add(
+        new OptionData(OptionType.STRING, "emote", "The emote of the village to add.", true));
+    this.options.add(
         new OptionData(OptionType.STRING, "name", "The name of the village to add.", true));
     this.options.add(
         new OptionData(
@@ -27,6 +29,7 @@ public class AddVillage extends CommandAbstract {
   @Override
   public void execute(SlashCommandInteractionEvent event) {
     String region = event.getOption("region").getAsString();
+    String emote = event.getOption("emote").getAsString();
     String name = event.getOption("name").getAsString();
     String description = event.getOption("description").getAsString();
 
@@ -50,7 +53,6 @@ public class AddVillage extends CommandAbstract {
         embed.setAuthor("Village already exists!", null, event.getUser().getAvatarUrl());
         embed.setDescription("A village with the same name already exists.");
         embed.addField("Name", name, true);
-        embed.addField("Description", description, true);
         embed.addField("Region", region, true);
         embed.setColor(0xff0000);
         embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());
@@ -61,6 +63,7 @@ public class AddVillage extends CommandAbstract {
         // Create the city.
         VillageEntity village = new VillageEntity();
         village.setName(name);
+        village.setEmote(emote);
         village.setDescription(description);
         village.setRegion(DatabaseManager.findByName(region, RegionEntity.class));
 
@@ -70,7 +73,6 @@ public class AddVillage extends CommandAbstract {
         embed.setAuthor("New village added!", null, event.getUser().getAvatarUrl());
         embed.setDescription("A new village has been added to the map.");
         embed.addField("Name", name, true);
-        embed.addField("Description", description, true);
         embed.addField("Region", region, true);
         embed.setColor(0x00ff00);
         embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());

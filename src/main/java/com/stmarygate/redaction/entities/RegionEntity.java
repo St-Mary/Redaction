@@ -14,6 +14,10 @@ public class RegionEntity {
   private Long id;
 
   @Setter
+  @Column(name = "region_emote", nullable = false)
+  private String emote;
+
+  @Setter
   @Column(name = "region_name", nullable = false)
   private String name;
 
@@ -30,4 +34,12 @@ public class RegionEntity {
   @Column(name = "region_villages", nullable = true)
   @OneToMany(mappedBy = "region", fetch = FetchType.EAGER)
   private List<VillageEntity> villages;
+
+  public String getName() {
+    return this.emote + " " + this.name;
+  }
+
+  public String getNameWithoutEmote() {
+    return this.name;
+  }
 }

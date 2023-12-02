@@ -30,6 +30,7 @@ public class StMaryRedactor {
     commands.add(new AddRegion(this));
     commands.add(new AddPlace(this));
     commands.add(new GetRegions(this));
+    commands.add(new GetPlace(this));
     commands.add(new GetRegion(this));
   }
 

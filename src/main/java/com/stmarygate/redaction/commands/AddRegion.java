@@ -18,6 +18,8 @@ public class AddRegion extends CommandAbstract {
     this.options.add(
         new OptionData(OptionType.STRING, "name", "The name of the region to add.", true));
     this.options.add(
+        new OptionData(OptionType.STRING, "emote", "The emote of the region to add.", true));
+    this.options.add(
         new OptionData(
             OptionType.STRING, "description", "The description of the region to add.", true));
   }
@@ -25,6 +27,7 @@ public class AddRegion extends CommandAbstract {
   @Override
   public void execute(SlashCommandInteractionEvent event) {
     String name = event.getOption("name").getAsString();
+    String emote = event.getOption("emote").getAsString();
     String description = event.getOption("description").getAsString();
     event.deferReply().queue();
 
@@ -44,6 +47,7 @@ public class AddRegion extends CommandAbstract {
       RegionEntity region = new RegionEntity();
       region.setName(name);
       region.setDescription(description);
+      region.setEmote(emote);
       DatabaseManager.save(region);
 
       event

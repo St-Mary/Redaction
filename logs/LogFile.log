@@ -479,3 +479,7 @@ net.dv8tion.jda.api.exceptions.ContextException: null
                 [1;31mERROR [0;39m Error while executing command: 
 22:24:12.806 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
                 [1;31mERROR [0;39m Error while executing command: 
+23:00:23.123 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
+23:06:49.885 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
+                [1;31mERROR [0;39m Error while executing command: 
