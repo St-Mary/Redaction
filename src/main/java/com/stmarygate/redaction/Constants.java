@@ -25,7 +25,7 @@ public class Constants {
     }
 
     public static String getDatabasePort() {
-        return (dotenv.get("database_port") == null) ? "" : ":" + dotenv.get("database_port");
+        return (dotenv.get("database_port") == null || dotenv.get("database_port").isEmpty()) ? "" : ":" + dotenv.get("database_port");
     }
 
     public static String getDatabaseName() {

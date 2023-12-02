@@ -35,7 +35,6 @@ public class DatabaseManager {
                 Map<String, Object> settings = getStringObjectMap();
 
                 registryBuilder.applySettings(settings);
-
                 registry = registryBuilder.build();
 
                 MetadataSources sources = new MetadataSources(registry);
@@ -111,6 +110,17 @@ public class DatabaseManager {
         Session session = getSessionFactory().openSession();
         session.beginTransaction();
         T obj = session.find(cls, id);
+        session.getTransaction().commit();
+        session.close();
+        return obj;
+    }
+
+    public static <T> T findByName(String name, Class<T> cls) {
+        Session session = getSessionFactory().openSession();
+        session.beginTransaction();
+        T obj = session.createQuery("from " + cls.getSimpleName() + " WHERE name = :name", cls)
+                .setParameter("name", name)
+                .uniqueResult();
         session.getTransaction().commit();
         session.close();
         return obj;

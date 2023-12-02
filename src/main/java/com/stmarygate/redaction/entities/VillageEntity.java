@@ -29,7 +29,7 @@ public class VillageEntity {
     private List<PlaceEntity> places;
 
     @Setter
-    @Column(name = "village_region", nullable = true)
+    @JoinColumn(name = "village_region", nullable = true)
     @ManyToOne
     private RegionEntity region;
 }

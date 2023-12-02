@@ -21,12 +21,12 @@ public class PlaceEntity {
     private String description;
 
     @Setter
-    @Column(name = "place_village", nullable = true)
+    @JoinColumn(name = "place_village", nullable = true)
     @ManyToOne
     private VillageEntity village;
 
     @Setter
-    @Column(name = "place_region", nullable = true)
+    @JoinColumn(name = "place_region", nullable = true)
     @ManyToOne
     private RegionEntity region;
 }

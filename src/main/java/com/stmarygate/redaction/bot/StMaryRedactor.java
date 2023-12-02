@@ -1,7 +1,8 @@
 package com.stmarygate.redaction.bot;
 
 import com.stmarygate.redaction.Constants;
-import com.stmarygate.redaction.commands.AddCity;
+import com.stmarygate.redaction.commands.AddVillage;
+import com.stmarygate.redaction.commands.AddRegion;
 import com.stmarygate.redaction.commands.CommandAbstract;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
@@ -28,7 +29,8 @@ public class StMaryRedactor {
                 .addEventListeners(eventListener)
                 .build();
 
-        commands.add(new AddCity(this));
+        commands.add(new AddVillage(this));
+        commands.add(new AddRegion(this));
     }
 
     private static class EventListener extends ListenerAdapter {

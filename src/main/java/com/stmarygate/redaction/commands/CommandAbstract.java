@@ -52,7 +52,8 @@ public abstract class CommandAbstract {
         try {
             this.execute(event);
         } catch (Exception e) {
-            LOGGER.error("Error while executing command: " + e);
+            LOGGER.error("Error while executing command: ");
+            e.printStackTrace();
         }
     }
 
