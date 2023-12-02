@@ -483,3 +483,7 @@ net.dv8tion.jda.api.exceptions.ContextException: null
                 [1;31mERROR [0;39m Error while executing command: 
 23:06:49.885 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mCommandAbstract[0;39m
                 [1;31mERROR [0;39m Error while executing command: 
+23:17:12.191 [1;36mHikariPool-1 housekeeper          [0;39m [31m          [0;39m [1;32mHikariPool     [0;39m
+                [31mWARN  [0;39m HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m22s114ms).
+23:17:38.909 [1;36mJDA MainWS-ReadThread             [0;39m [31m          [0;39m [1;32mWebSocketClient[0;39m
+                [31mWARN  [0;39m Got disconnected from WebSocket (Code 1000). Appending to reconnect queue
