@@ -126,6 +126,7 @@ public class EditPlace extends CommandAbstract {
               .sendMessage(
                   "This place doesn't exist. Please consider to modify your command parameters")
               .queue();
+          event.getJDA().removeEventListener(this);
           return;
         }
         String placeVillageName =
@@ -139,6 +140,7 @@ public class EditPlace extends CommandAbstract {
               .sendMessage(
                   "This place doesn't exist. Please consider to modify your command parameters")
               .queue();
+          event.getJDA().removeEventListener(this);
         }
 
         currentDescription = place.getDescription();
@@ -156,7 +158,10 @@ public class EditPlace extends CommandAbstract {
         editPlace.regionPlace = new Region(editPlace.currentRegion, region);
         editPlace.emotePlace = new Emote(editPlace.currentEmote, emote);
 
-        if (!checkVillageAndRegion(event)) return;
+        if (!checkVillageAndRegion(event)) {
+          event.getJDA().removeEventListener(this);
+          return;
+        }
 
         place.setName(editPlace.namePlace.getNewName());
         place.setDescription(editPlace.descriptionPlace.getNewDescription());

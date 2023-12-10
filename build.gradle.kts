@@ -1,5 +1,7 @@
 plugins {
     id("java")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    application
 }
 
 group = "com.stmarygate.redaction"
@@ -9,9 +11,11 @@ repositories {
     mavenCentral()
 }
 
+project.setProperty("mainClassName", "com.stmarygate.redaction.Main")
+
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.22")
-    annotationProcessor("org.projectlombok:lombok:1.18.22")
+    compileOnly("org.projectlombok:lombok:1.18.30")
+    annotationProcessor("org.projectlombok:lombok:1.18.30")
 
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -28,6 +32,31 @@ dependencies {
     implementation("org.hibernate.orm:hibernate-core:6.3.0.CR1")
     implementation("org.hibernate.orm:hibernate-hikaricp:6.3.0.CR1")
     implementation("com.vladmihalcea:hibernate-types-60:2.21.1")
+}
+
+tasks {
+    withType<Copy> {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    }
+}
+
+tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    manifest {
+        attributes["Main-Class"] = "com.stmarygate.redaction.Main"
+    }
+
+    configurations["compileClasspath"].forEach { file: File ->
+        from(zipTree(file.absoluteFile))
+    }
+}
+
+tasks.shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveBaseName.set("stmary-redaction")
+    archiveClassifier.set("")
+    archiveVersion.set("")
 }
 
 tasks.test {

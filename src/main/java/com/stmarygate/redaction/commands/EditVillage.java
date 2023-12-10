@@ -171,6 +171,7 @@ public class EditVillage extends CommandAbstract {
         String formattedText = formatVillageInformation(editVillage.village);
 
         event.getHook().sendMessage(formattedText).queue();
+        event.getJDA().removeEventListener(this);
       }
     }
   }
