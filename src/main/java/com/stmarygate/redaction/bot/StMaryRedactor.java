@@ -37,6 +37,7 @@ public class StMaryRedactor {
     commands.add(new AddPlace(this));
     commands.add(new EditRegion(this));
     commands.add(new EditPlace(this));
+    commands.add(new EditVillage(this));
     commands.add(new GetRegion(this));
     commands.add(new GetVillage(this));
     commands.add(new GetPlace(this));

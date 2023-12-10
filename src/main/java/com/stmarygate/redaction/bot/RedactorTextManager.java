@@ -40,4 +40,16 @@ public class RedactorTextManager {
 
     event.getHook().sendMessageEmbeds(embed.build()).queue();
   }
+
+  public static void sendVillageNotFoundError(
+      SlashCommandInteractionEvent event, String nameVillage) {
+    EmbedBuilder embed = new EmbedBuilder();
+    embed.setAuthor("Village does not exist!", null, event.getUser().getAvatarUrl());
+    embed.setDescription("The village you specified does not exist.");
+    embed.addField("Village", nameVillage, true);
+    embed.setColor(0xff0000);
+    embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());
+
+    event.getHook().sendMessageEmbeds(embed.build()).queue();
+  }
 }

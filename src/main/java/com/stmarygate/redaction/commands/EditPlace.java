@@ -59,7 +59,7 @@ public class EditPlace extends CommandAbstract {
             ? Objects.requireNonNull(event.getOption("village")).getAsString()
             : null;
 
-    event.getJDA().addEventListener(new ModalListener(this));
+    event.getJDA().addEventListener(new ModalListener(this, event.getUser().getId()));
     event.replyModal(getModal()).queue();
   }
 
@@ -79,7 +79,7 @@ public class EditPlace extends CommandAbstract {
 
     TextInput village =
         TextInput.create("village", "Village", TextInputStyle.SHORT)
-            .setPlaceholder("Enter the new village (Enter \"none\" to keep the current village)")
+            .setPlaceholder("Enter \"none\" to keep the current village or \"no\" to remove it")
             .setRequired(true)
             .build();
 
@@ -105,15 +105,18 @@ public class EditPlace extends CommandAbstract {
   }
 
   public class ModalListener extends ListenerAdapter {
-    EditPlace editPlace;
+    private final EditPlace editPlace;
+    private final String authorId;
 
-    public ModalListener(EditPlace editPlace) {
+    public ModalListener(EditPlace editPlace, String authorId) {
       this.editPlace = editPlace;
+      this.authorId = authorId;
     }
 
     @Override
     public void onModalInteraction(@NotNull ModalInteractionEvent event) {
-      if (event.getModalId().equals("newinformations")) {
+      if (event.getModalId().equals("newinformations")
+          && event.getUser().getId().equals(authorId)) {
         event.deferReply().queue();
         place = DatabaseManager.findByName(editPlace.currentName, PlaceEntity.class);
 
@@ -158,8 +161,10 @@ public class EditPlace extends CommandAbstract {
         place.setName(editPlace.namePlace.getNewName());
         place.setDescription(editPlace.descriptionPlace.getNewDescription());
         place.setVillage(
-            DatabaseManager.findByName(
-                editPlace.villagePlace.getNewVillage(), VillageEntity.class));
+            (editPlace.villagePlace.isVillageRemoved())
+                ? null
+                : DatabaseManager.findByName(
+                    editPlace.villagePlace.getNewVillage(), VillageEntity.class));
         place.setRegion(
             DatabaseManager.findByName(editPlace.regionPlace.getNewRegion(), RegionEntity.class));
         place.setEmote(editPlace.emotePlace.getNewEmote());
@@ -187,7 +192,7 @@ public class EditPlace extends CommandAbstract {
           + "\n"
           + Constants.VILLAGE_EMOJI
           + " **Village:** "
-          + place.getVillage().getName()
+          + (place.getVillage() != null ? place.getVillage().getName() : "None")
           + "\n"
           + Constants.REGION_EMOJI
           + " **Region:** "
@@ -205,7 +210,7 @@ public class EditPlace extends CommandAbstract {
       RegionEntity region =
           DatabaseManager.findByName(editPlace.regionPlace.getNewRegion(), RegionEntity.class);
 
-      if (village == null) {
+      if (village == null && !editPlace.villagePlace.isVillageRemoved()) {
         RedactorTextManager.sendErrorMessage(
             event, "This village doesn't exist.", "Please specify a different new village name.");
         return false;
@@ -262,6 +267,10 @@ public class EditPlace extends CommandAbstract {
       this.currentVillage = currentVillage;
       this.newVillage = newVillage;
       this.isVillageChanged = !newVillage.equals("\"none\"");
+    }
+
+    public boolean isVillageRemoved() {
+      return newVillage.equals("\"no\"");
     }
 
     public String getNewVillage() {
