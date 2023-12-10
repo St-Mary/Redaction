@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "regions")
-public class RegionEntity {
+public class RegionEntity extends Location {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

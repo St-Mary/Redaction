@@ -1,22 +1,23 @@
 package com.stmarygate.redaction.commands;
 
+import com.stmarygate.redaction.Constants;
+import com.stmarygate.redaction.bot.RedactorTextManager;
 import com.stmarygate.redaction.bot.StMaryRedactor;
 import com.stmarygate.redaction.database.DatabaseManager;
-import com.stmarygate.redaction.entities.PlaceEntity;
+import com.stmarygate.redaction.entities.Location;
 import com.stmarygate.redaction.entities.RegionEntity;
-import com.stmarygate.redaction.entities.VillageEntity;
-import net.dv8tion.jda.api.EmbedBuilder;
+import java.util.List;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
 public class GetRegion extends CommandAbstract {
+
   public GetRegion(StMaryRedactor client) {
     super(client);
-
     this.name = "getregion";
-    this.description = "Get a region.";
-
+    this.description = "Get a region";
     this.options.add(
         new OptionData(OptionType.STRING, "name", "The name of the region to get.", true));
   }
@@ -25,55 +26,65 @@ public class GetRegion extends CommandAbstract {
   public void execute(SlashCommandInteractionEvent event) {
     event.deferReply().queue();
 
-    String name = event.getOption("name").getAsString();
-    RegionEntity region = DatabaseManager.findByName(name, RegionEntity.class);
+    OptionMapping nameOption = event.getOption("name");
+    if (nameOption == null || !nameOption.getType().equals(OptionType.STRING)) {
+      RedactorTextManager.sendErrorMessage(
+          event, "Invalid input for region name.", "Please specify a valid region name.");
+      return;
+    }
+    String name = nameOption.getAsString();
 
+    RegionEntity region = findRegionByName(name);
     if (region == null) {
-      EmbedBuilder embed = new EmbedBuilder();
-      embed.setAuthor("Region doesn't exist!", null, event.getUser().getAvatarUrl());
-      embed.setDescription("A region with the same name doesn't exist.");
-      embed.addField("Name", name, true);
-      embed.setColor(0xff0000);
-      embed.setFooter("StMaryRedactor", event.getJDA().getSelfUser().getAvatarUrl());
-      embed.setTimestamp(event.getTimeCreated());
-
-      event.getHook().sendMessageEmbeds(embed.build()).queue();
-    } else {
-      String formattedText =
-          "╭───────────┈ ➤ ✎ **"
-              + "\uD83C\uDF0D Region Information"
-              + "**\n- "
-              + "**Name:** `"
-              + region.getName()
-              + "`\n- "
-              + "\uD83C\uDF67 **Description:** "
-              + region.getDescription()
-              + "\n"
-              + "\uD83D\uDD16 **Villages:** "
-              + formatVillages(region)
-              + "\n"
-              + "\uD83D\uDC88 **Places:** "
-              + formatPlaces(region)
-              + "\n╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
-
-      event.getHook().sendMessage(formattedText).queue();
+      sendRegionNotFound(event, name);
+      return;
     }
+
+    String formattedText = formatRegionInformation(region);
+    sendMessage(event, formattedText);
   }
 
-  private String formatVillages(RegionEntity region) {
+  private RegionEntity findRegionByName(String name) {
+    return DatabaseManager.findByName(name, RegionEntity.class);
+  }
+
+  private String formatRegionInformation(RegionEntity region) {
+    return "╭───────────┈ ➤ ✎ **"
+        + Constants.REGION_EMOJI
+        + " Region Information"
+        + "**\n- "
+        + "**Name:** `"
+        + region.getName()
+        + "`\n- "
+        + Constants.DESCRIPTION_EMOJI
+        + " **Description:** "
+        + region.getDescription()
+        + "\n"
+        + "\uD83D\uDD16 **Villages:** "
+        + formatEntities(region.getVillages(), Constants.VILLAGE_EMOJI)
+        + "\n"
+        + "\uD83D\uDC88 **Places:** "
+        + formatEntities(region.getPlaces(), Constants.PLACE_EMOJI)
+        + "\n"
+        + "╰─────────── ·\uFEFF \uFEFF \uFEFF· \uFEFF ·\uFEFF \uFEFF \uFEFF· \uFEFF✦";
+  }
+
+  private <T extends Location> String formatEntities(List<T> entities, String emoji) {
     StringBuilder formattedText = new StringBuilder();
-    for (VillageEntity village : region.getVillages()) {
-      formattedText.append("- \uD83C\uDFD8️ `").append(village.getName()).append("`\n");
+    for (T entity : entities) {
+      formattedText.append("- ").append(emoji).append(" `").append(entity.getName()).append("`\n");
     }
     return formattedText.toString();
   }
 
-  private String formatPlaces(RegionEntity region) {
-    StringBuilder formattedText = new StringBuilder();
-    for (PlaceEntity place : region.getPlaces()) {
-      if (place.getVillage() != null) continue;
-      formattedText.append("- \uD83D\uDCCD `").append(place.getName()).append("`\n");
-    }
-    return formattedText.toString();
+  private void sendRegionNotFound(SlashCommandInteractionEvent event, String regionName) {
+    RedactorTextManager.sendErrorMessage(
+        event,
+        "Region doesn't exist!",
+        "A region with the name '" + regionName + "' doesn't exist.");
+  }
+
+  private void sendMessage(SlashCommandInteractionEvent event, String message) {
+    event.getHook().sendMessage(message).queue();
   }
 }

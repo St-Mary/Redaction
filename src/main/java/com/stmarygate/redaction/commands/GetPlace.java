@@ -36,7 +36,9 @@ public class GetPlace extends CommandAbstract {
 
     PlaceEntity place = DatabaseManager.findByName(name, PlaceEntity.class);
     String placeVillageName =
-        (place != null && place.getVillage() != null) ? place.getVillage().getName() : null;
+        (place != null && place.getVillage() != null)
+            ? place.getVillage().getNameWithoutEmote()
+            : null;
 
     if (place == null
         || (!place.getRegion().getNameWithoutEmote().equals(regionName)

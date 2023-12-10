@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
@@ -18,21 +19,41 @@ import org.slf4j.LoggerFactory;
 @Getter
 public class StMaryRedactor {
 
+  private final Logger LOGGER = LoggerFactory.getLogger(StMaryRedactor.class);
   private final JDA jda;
   private final ArrayList<CommandAbstract> commands = new ArrayList<>();
+  private TextChannel logChannel;
 
-  public StMaryRedactor() {
+  public StMaryRedactor() throws InterruptedException {
+    initializeCommands();
     EventListener eventListener = new EventListener(this);
     DatabaseManager.getSessionFactory();
     jda = JDABuilder.createDefault(Constants.getToken()).addEventListeners(eventListener).build();
+  }
 
+  private void initializeCommands() {
     commands.add(new AddVillage(this));
     commands.add(new AddRegion(this));
     commands.add(new AddPlace(this));
+    commands.add(new EditRegion(this));
+    commands.add(new EditPlace(this));
     commands.add(new GetRegion(this));
     commands.add(new GetVillage(this));
     commands.add(new GetPlace(this));
     commands.add(new GetRegions(this));
+  }
+
+  private void registerSlashCommands() {
+    for (CommandAbstract command : commands) {
+      logChannel.getGuild().upsertCommand(command.buildCommandData()).queue();
+    }
+  }
+
+  private void checkLogChannel() {
+    if (logChannel == null || logChannel.getType().equals(ChannelType.PRIVATE)) {
+      LOGGER.error("Log channel is not set or is a private channel: {}", logChannel);
+      System.exit(1);
+    }
   }
 
   private static class EventListener extends ListenerAdapter {
@@ -45,14 +66,11 @@ public class StMaryRedactor {
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {
-      LOGGER.info("StMaryRedactor - Ready.", event.getJDA().getSelfUser().getGlobalName());
-      TextChannel chan = event.getJDA().getTextChannelById(Constants.getLogChannel());
-      chan.sendMessage(":fire: `StMaryRedactor` - Ready.").queue();
-
-      // Register slash commands to specific guilds.
-      for (CommandAbstract command : stMaryRedactor.getCommands()) {
-        chan.getGuild().upsertCommand(command.buildCommandData()).queue();
-      }
+      LOGGER.info("StMaryRedactor - Ready. Bot Name: {}", event.getJDA().getSelfUser().getName());
+      this.stMaryRedactor.logChannel = event.getJDA().getTextChannelById(Constants.getLogChannel());
+      this.stMaryRedactor.checkLogChannel();
+      this.stMaryRedactor.registerSlashCommands();
+      stMaryRedactor.getLogChannel().sendMessage(":fire: `StMaryRedactor` - Ready.").queue();
     }
 
     @Override
@@ -63,12 +81,10 @@ public class StMaryRedactor {
               + " from "
               + event.getUser().getGlobalName());
 
-      for (CommandAbstract command : stMaryRedactor.getCommands()) {
-        if (command.getName().equals(event.getName())) {
-          command.run(event);
-          break;
-        }
-      }
+      stMaryRedactor.getCommands().stream()
+          .filter(command -> command.getName().equals(event.getName()))
+          .findFirst()
+          .ifPresent(command -> command.run(event));
     }
   }
 }

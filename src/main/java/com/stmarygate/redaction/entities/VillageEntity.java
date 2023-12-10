@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "villages")
-public class VillageEntity {
+public class VillageEntity extends Location {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -33,7 +33,7 @@ public class VillageEntity {
 
   @Setter
   @JoinColumn(name = "village_region", nullable = true)
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.MERGE)
   private RegionEntity region;
 
   public String getName() {

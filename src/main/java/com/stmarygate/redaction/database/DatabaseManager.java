@@ -136,7 +136,7 @@ public class DatabaseManager {
   public static void save(Object obj) {
     Session session = getSessionFactory().openSession();
     session.beginTransaction();
-    session.persist(obj);
+    session.merge(obj);
     session.getTransaction().commit();
     session.close();
   }

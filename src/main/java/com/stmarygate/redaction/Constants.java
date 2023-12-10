@@ -3,6 +3,10 @@ package com.stmarygate.redaction;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Constants {
+  public static final String REGION_EMOJI = "\uD83C\uDF0D";
+  public static final String DESCRIPTION_EMOJI = "\uD83C\uDF67";
+  public static final String VILLAGE_EMOJI = "\uD83C\uDFD8️";
+  public static final String PLACE_EMOJI = "\uD83D\uDCCD";
   private static final Dotenv dotenv;
 
   static {

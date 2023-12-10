@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "places")
-public class PlaceEntity {
+public class PlaceEntity extends Location {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
